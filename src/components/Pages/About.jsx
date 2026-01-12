@@ -59,7 +59,7 @@ export default function About() {
             </div>
       </div>
         <section>
-        <footer className="bg-slate-900 border-t border-slate-700 py-10 px-4">
+        <footer className="bg-slate-900 border-t border-slate-700 py-10 px-4 ">
           <div className="max-w-7xl mx-auto text-center">
             <h3 className="text-xl font-semibold text-white mb-2">My Portfolio</h3>
             <p className="text-slate-400 mb-6">

@@ -1,6 +1,7 @@
 import Img1 from "../../assets/img1.jpg";
 import Img2 from "../../assets/img2.jpg";
 import Img3 from "../../assets/img3.jpg";
+import Img4 from "../../assets/img4.jpg";
 export default function Portfolio() {
   const projects = [
     {
@@ -21,9 +22,9 @@ export default function Portfolio() {
     },
     {
       id: 3,
-      title: "Not yet available",
-      description: "Built a secure digital marketplace featuring an intuitive shopping cart, seamless checkout with payment gateway integration, and an automated system.",
-      tags: ["React", "MySql", "Tailwind"],
+      title: "Student Management System(SYS)",
+      description: "There are 3 role in this system Admin, Teacher, Student. Each role have different permission to access the system features.",
+      tags: ["React", "Tailwind", "Laravel","PostgreSQL"],
       image: Img3,
       link: "https://example.com/portfolio",
     },
@@ -32,7 +33,7 @@ export default function Portfolio() {
       title: "Not yet available",
       description: "Implemented a React + Laravel marketplace that handles product listings, shopping cart flows, secure payment processing, and programmatic license-key.",
       tags: ["React", "API Integration", "CSS"],
-      image: Img3,
+      image: Img4,
       link: "https://example.com/portfolio",
     },
     {

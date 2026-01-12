@@ -25,7 +25,7 @@ export default function Portfolio() {
       title: "Student Management System(SYS)",
       description: "There are 3 role in this system Admin, Teacher, Student. Each role have different permission to access the system features.",
       tags: ["React", "Tailwind", "Laravel","PostgreSQL"],
-      image: Img3,
+      image: Img4,
       link: "https://example.com/portfolio",
     },
     {
@@ -33,7 +33,7 @@ export default function Portfolio() {
       title: "Not yet available",
       description: "Implemented a React + Laravel marketplace that handles product listings, shopping cart flows, secure payment processing, and programmatic license-key.",
       tags: ["React", "API Integration", "CSS"],
-      image: Img4,
+      image: Img3,
       link: "https://example.com/portfolio",
     },
     {

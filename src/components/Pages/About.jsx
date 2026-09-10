@@ -12,6 +12,7 @@ import certPython from "../../assets/cert_python.jpg"
 import certJava from "../../assets/cert_java.jpg"
 import certReactjs from "../../assets/cert_reactjs.jpg"
 import certPhp from "../../assets/cert_php.jpg"
+import internCertificate from "../../assets/intern_certificate.jpg"
 
 const skills = [
   "React", "JavaScript", "Tailwind CSS", "Bootstrap",
@@ -62,6 +63,21 @@ const certificates = [
   },
 ]
 
+/* Internship certificate — transcribed from the document itself. */
+const internshipCertificate = {
+  id: "internship",
+  issuer: "Axis Investment Consulting",
+  title: "Internship Program in Web Development",
+  statement:
+    "For Completing an internship program in web development at Axis Investment Consulting",
+  granted: "June – August 2026",
+  grantedLabel: "Period",
+  signedBy: "P.S. Vathana",
+  signedRole: "Director",
+  image: internCertificate,
+  icon: <i className="fa-solid fa-briefcase"></i>,
+}
+
 const experiences = [
   {
     role: "Full-stack Developer Intern — Inklusivity Technology",
@@ -84,7 +100,7 @@ const experiences = [
 ]
 
 const stats = [
-  { value: `${certificates.length}`, label: "Certificates" },
+  { value: `${certificates.length + 1}`, label: "Certificates" },
   { value: "6", label: "Months Interning" },
   { value: `${skills.length}`, label: "Technologies" },
   { value: "5+", label: "Projects Shipped" },
@@ -126,7 +142,7 @@ function CertificateModal({ cert, onClose }) {
       >
         <div className="flex items-start justify-between gap-4 border-b border-line px-5 py-4 sm:px-6">
           <div className="min-w-0">
-            <p className="label">Certificate of Completion</p>
+            <p className="label">{cert.issuer ? `${cert.issuer} — Certificate of Completion` : "Certificate of Completion"}</p>
             <h3 className="mt-1.5 font-display text-[15px] font-semibold leading-snug text-ink">
               {cert.title}
             </h3>
@@ -151,7 +167,9 @@ function CertificateModal({ cert, onClose }) {
         </div>
 
         <div className="flex items-center justify-between gap-3 border-t border-line px-5 py-4 sm:px-6">
-          <span className="label">Granted: {cert.granted}</span>
+          <span className="label">
+            {cert.grantedLabel || "Granted"}: {cert.granted}
+          </span>
           <span className="flex items-center gap-2 rounded-full border border-live/30 bg-live/10 px-3 py-1">
             <LiveDot />
             <span className="font-mono text-[11px] font-medium text-live">Verified</span>
@@ -362,12 +380,95 @@ export default function About() {
         <SectionHead
           index="03"
           label="Credentials"
-          title="Certificates – Etec Center"
+          title="Certificates"
           description="Click any certificate to see the official document"
-          aside={`${certificates.length} awarded`}
+          aside={`${certificates.length + 1} awarded`}
         />
 
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* ── Featured: internship certificate ── */}
+        <Reveal className="mt-12">
+          <button
+            onClick={() => setSelectedCert(internshipCertificate)}
+            className="group grid w-full grid-cols-1 overflow-hidden rounded-xl border border-line bg-surface text-left transition-all duration-500 ease-out hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl hover:shadow-black/5 lg:grid-cols-12"
+          >
+            {/* Document preview */}
+            <div className="relative aspect-[4/3] overflow-hidden bg-surface-2 sm:aspect-[16/9] lg:col-span-6 lg:aspect-auto lg:min-h-[300px]">
+              <img
+                src={internshipCertificate.image}
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-70" />
+
+              <span className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/25 bg-black/45 px-3 py-1.5 backdrop-blur-md">
+                <span className="text-[11px] text-white">{internshipCertificate.icon}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-white">
+                  Internship
+                </span>
+              </span>
+
+              <span className="absolute bottom-4 right-4 flex translate-y-1 items-center gap-1.5 rounded-full border border-white/25 bg-black/50 px-3 py-1.5 opacity-0 backdrop-blur-md transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100">
+                <svg className="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-white">View</span>
+              </span>
+            </div>
+
+            {/* Meta */}
+            <div className="flex flex-col justify-center p-6 sm:p-8 lg:col-span-6 lg:p-10">
+              <span className="label text-accent-ink">{internshipCertificate.issuer}</span>
+
+              <h3 className="mt-3 font-display text-2xl font-semibold leading-tight tracking-tight text-ink sm:text-[28px]">
+                {internshipCertificate.title}
+              </h3>
+
+              <p className="mt-4 text-[15px] leading-relaxed text-ink-soft text-pretty">
+                {internshipCertificate.statement}
+              </p>
+
+              <dl className="mt-6 border-t border-line">
+                <div className="flex items-baseline gap-4 border-b border-line py-3">
+                  <dt className="label w-24 shrink-0">
+                    {internshipCertificate.grantedLabel}
+                  </dt>
+                  <dd className="text-[15px] font-medium text-ink">
+                    {internshipCertificate.granted}
+                  </dd>
+                </div>
+                <div className="flex items-baseline gap-4 border-b border-line py-3">
+                  <dt className="label w-24 shrink-0">Signed by</dt>
+                  <dd className="text-[15px] font-medium text-ink">
+                    {internshipCertificate.signedBy}
+                    <span className="ml-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
+                      {internshipCertificate.signedRole}
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+
+              <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-ink">
+                <span className="link-underline">View certificate</span>
+                <span className="text-accent-ink transition-transform duration-500 ease-out group-hover:translate-x-1">
+                  →
+                </span>
+              </span>
+            </div>
+          </button>
+        </Reveal>
+
+        {/* ── Etec Center certificates ── */}
+        <Reveal className="mt-16 flex items-center gap-4 border-b border-line pb-5">
+          <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
+            Certificates – Etec Center
+          </h3>
+          <span className="h-px flex-1 bg-line" aria-hidden="true" />
+          <span className="label hidden sm:block">{`${certificates.length} awarded`}</span>
+        </Reveal>
+
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {certificates.map((cert, i) => (
             <Reveal key={cert.id} delay={Math.min(i, 5) * 0.07}>
               <button

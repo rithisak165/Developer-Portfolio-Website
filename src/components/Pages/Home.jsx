@@ -1,8 +1,12 @@
+import { useRef } from "react"
 import { Link } from "react-router-dom"
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion"
 import Footer from "../Footer"
 import ScrollToNext from "../ScrollToNext"
+import Reveal from "../ui/Reveal"
+import { EASE } from "../../lib/motion"
+import { Section, SectionHead, LiveDot } from "../ui/Section"
 import profilePhoto from "../../assets/profile.png"
-import { motion } from "framer-motion"
 
 const techStack = [
   { name: "React", icon: <i className="fa-brands fa-react text-[#61DAFB]"></i> },
@@ -10,13 +14,13 @@ const techStack = [
   { name: "Bootstrap", icon: <i className="fa-brands fa-bootstrap text-[#7952B3]"></i> },
   { name: "Vue.js", icon: <i className="fa-brands fa-vuejs text-[#4FC08D]"></i> },
   { name: "Tailwind CSS", icon: <i className="fa-solid fa-wind text-[#06B6D4]"></i> },
-  { name: "GitHub", icon: <i className="fa-brands fa-github text-slate-900 dark:text-white"></i> },
+  { name: "GitHub", icon: <i className="fa-brands fa-github text-ink"></i> },
   { name: "PHP", icon: <i className="fa-brands fa-php text-[#777BB4]"></i> },
   { name: "Laravel", icon: <i className="fa-brands fa-laravel text-[#FF2D20]"></i> },
   { name: "PostgreSQL", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" className="w-[1em] h-[1em] mx-auto" /> },
   { name: "MySQL", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL" className="w-[1em] h-[1em] mx-auto" /> },
   { name: "Git", icon: <i className="fa-brands fa-git-alt text-[#F05032]"></i> },
-  { name: "Hosting", icon: <i className="fa-solid fa-server text-slate-600 dark:text-slate-300"></i> },
+  { name: "Hosting", icon: <i className="fa-solid fa-server text-ink-soft"></i> },
 ]
 
 const stats = [
@@ -25,350 +29,367 @@ const stats = [
   { value: "5+", label: "Years Experience" },
   { value: "100%", label: "Client Satisfaction" },
 ]
+
+const services = [
+  {
+    icon: <i className="fa-solid fa-palette"></i>,
+    title: "UI/UX Design",
+    desc: "Creating beautiful and intuitive user interfaces with modern design principles and pixel-perfect attention to detail.",
+  },
+  {
+    icon: <i className="fa-solid fa-laptop-code"></i>,
+    title: "Development",
+    desc: "Building responsive and performant web applications with cutting-edge technologies like React, Laravel, and more.",
+  },
+  {
+    icon: <i className="fa-solid fa-rocket"></i>,
+    title: "Optimization",
+    desc: "Ensuring lightning-fast load times, SEO best practices, and smooth user experiences across all devices.",
+  },
+]
+
+const socials = [
+  { href: "https://www.facebook.com/share/1BY6erLjjv/?mibextid=wwXIfr", icon: "fa-brands fa-facebook", label: "Facebook" },
+  { href: "https://t.me/rithysak_meng", icon: "fa-brands fa-telegram", label: "Telegram" },
+  { href: "mailto:m.mengrithysak24@cam-ed.com", icon: "fa-solid fa-envelope", label: "Email" },
+]
+
+/* Hero entrance — one shared timeline so the whole first screen lands together */
+const heroItem = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
+}
+const heroGroup = {
+  hidden: {},
+  show: { transition: { delayChildren: 0.1, staggerChildren: 0.09 } },
+}
+
 export default function Home() {
+  const heroRef = useRef(null)
+  const reduce = useReducedMotion()
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] })
+  const portraitY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "14%"])
+  const heroFade = useTransform(scrollYProgress, [0, 0.8], [1, reduce ? 1 : 0.25])
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-300">
-      {/* ── Hero ── */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated background blobs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-          <div
-            className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: "1s" }}
-          />
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-slate-200/40 dark:bg-slate-800/20 rounded-full blur-3xl"
-          />
-          {/* Grid pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.04] dark:opacity-[0.03]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(6,182,212,1) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
-        </div>
+    <main className="bg-paper text-ink">
+      {/* ═══ Hero ═══ */}
+      <section ref={heroRef} className="bg-noise relative overflow-hidden">
+        {/* Blueprint grid, faded out toward the bottom */}
+        <div className="bg-grid mask-fade-b pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
+        {/* Single warm bloom — the only glow on the page */}
+        <div
+          className="pointer-events-none absolute -right-40 -top-32 h-[520px] w-[520px] rounded-full bg-accent/10 blur-[120px]"
+          aria-hidden="true"
+        />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
-            {/* Left Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="flex-1 text-center lg:text-left"
-            >
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full px-4 py-1.5 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-8">
-                <span className="w-2 h-2 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-pulse" />
-                Available for full time work
-              </div>
+        <div className="shell relative">
+          <motion.div
+            variants={heroGroup}
+            initial="hidden"
+            animate="show"
+            style={{ opacity: heroFade }}
+            className="grid min-h-[92svh] grid-cols-1 items-center gap-12 pb-16 pt-28 sm:pt-32 lg:grid-cols-12 lg:gap-10 lg:pb-24"
+          >
+            {/* ── Left: statement ── */}
+            <div className="lg:col-span-7">
+              <motion.div variants={heroItem} className="flex items-center gap-3">
+                <LiveDot />
+                <span className="label text-ink-soft">Available for full time work</span>
+              </motion.div>
 
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight">
-                Hi, I'm{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 dark:from-cyan-400 via-blue-500 dark:via-blue-400 to-purple-600 dark:to-purple-500">
-                  RITHISAK
+              <motion.h1
+                variants={heroItem}
+                className="mt-7 font-display font-semibold leading-[0.9] text-ink"
+              >
+                <span className="block text-[clamp(1.5rem,4vw,2.25rem)] font-normal tracking-tight text-muted">
+                  Hi, I&apos;m
                 </span>
-              </h1>
+                <span className="mt-1 block text-display-lg">
+                  RITHISAK
+                  <span className="text-accent">.</span>
+                </span>
+              </motion.h1>
 
-              <p className="text-xl sm:text-2xl text-slate-600 dark:text-slate-400 mb-4 max-w-2xl lg:mx-0 mx-auto font-light">
-                Full Stack Developer &amp; Designer
-              </p>
-              <p className="text-base sm:text-lg text-slate-500 mb-12 max-w-xl lg:mx-0 mx-auto">
-                Crafting beautiful digital experiences with clean code and modern design that leaves a lasting impression.
-              </p>
+              {/* Role, set as a ruled caption line */}
+              <motion.div
+                variants={heroItem}
+                className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-5"
+              >
+                <span className="font-display text-lg font-medium tracking-tight text-ink sm:text-xl">
+                  Full Stack Developer &amp; Designer
+                </span>
+                <span className="hidden h-px flex-1 bg-line sm:block" aria-hidden="true" />
+              </motion.div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link
-                  to="/portfolio"
-                  className="group inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5 text-base"
-                >
+              <motion.p
+                variants={heroItem}
+                className="mt-6 max-w-xl text-[15px] leading-relaxed text-ink-soft text-pretty sm:text-base"
+              >
+                Crafting beautiful digital experiences with clean code and modern design that leaves a
+                lasting impression.
+              </motion.p>
+
+              <motion.div variants={heroItem} className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <Link to="/portfolio" className="btn-accent group">
                   View My Work
-                  <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">
+                    →
+                  </span>
                 </Link>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 border border-slate-300 hover:border-cyan-500/50 text-slate-800 shadow-sm dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:border-slate-700 dark:text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:-translate-y-0.5 text-base"
-                >
+                <Link to="/contact" className="btn-ghost">
                   Contact Me
                 </Link>
-              </div>
+              </motion.div>
 
-              {/* Social links */}
-              <div className="flex items-center gap-4 mt-10 justify-center lg:justify-start">
-                <span className="text-slate-500 dark:text-slate-600 text-xs font-semibold uppercase tracking-widest">Find me on</span>
-                <span className="w-10 h-px bg-slate-300 dark:bg-slate-800" />
-                <div className="flex gap-2.5">
-                  <a
-                    href="https://www.facebook.com/share/1BY6erLjjv/?mibextid=wwXIfr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800 hover:border-cyan-500/50 dark:hover:border-cyan-500/50 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-cyan-500/10"
-                  >
-                    <i className="fa-brands fa-facebook" />
-                  </a>
-                  <a
-                    href="https://t.me/rithysak_meng"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Telegram"
-                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800 hover:border-cyan-500/50 dark:hover:border-cyan-500/50 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-cyan-500/10"
-                  >
-                    <i className="fa-brands fa-telegram" />
-                  </a>
-                  <a
-                    href="mailto:m.mengrithysak24@cam-ed.com"
-                    aria-label="Email"
-                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800 hover:border-cyan-500/50 dark:hover:border-cyan-500/50 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-cyan-500/10"
-                  >
-                    <i className="fa-solid fa-envelope" />
-                  </a>
+              {/* Socials */}
+              <motion.div variants={heroItem} className="mt-10 flex items-center gap-4">
+                <span className="label">Find me on</span>
+                <span className="h-px w-8 bg-line-strong" aria-hidden="true" />
+                <div className="flex gap-2">
+                  {socials.map((s) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      target={s.href.startsWith("http") ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                      aria-label={s.label}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink-soft transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-accent hover:text-accent-ink"
+                    >
+                      <i className={`${s.icon} text-sm`} />
+                    </a>
+                  ))}
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
 
-            {/* Right Content - Profile Image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex-1 flex justify-center lg:justify-end relative"
-            >
-              {/* Decorative glow behind image */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl" />
-
-              <div className="relative">
-                {/* Rotating gradient ring */}
-                <div className="absolute -inset-1.5 rounded-full bg-[conic-gradient(from_0deg,#06b6d4,#3b82f6,#a855f7,#06b6d4)] animate-[spin_6s_linear_infinite] opacity-80 blur-[1.5px]" />
-
-                <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full overflow-hidden ring-4 ring-slate-50 dark:ring-slate-950 shadow-2xl shadow-cyan-500/20">
+            {/* ── Right: portrait ── */}
+            <motion.div variants={heroItem} className="lg:col-span-5">
+              <motion.div style={{ y: portraitY }} className="relative mx-auto max-w-[380px] lg:max-w-none">
+                {/* Offset hairline frame */}
+                <div
+                  className="pointer-events-none absolute -bottom-4 -left-4 h-full w-full rounded-xl border border-accent/40"
+                  aria-hidden="true"
+                />
+                <div className="relative overflow-hidden rounded-xl border border-line bg-surface-2">
                   <img
                     src={profilePhoto}
                     alt="Meng Rithisak"
-                    className="w-full h-full object-cover object-top"
+                    className="aspect-[4/5] w-full object-cover object-top transition-transform duration-[900ms] ease-out hover:scale-[1.03]"
                   />
+                  {/* Caption strip over the image */}
+                  <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 border-t border-line bg-paper/85 px-4 py-3 backdrop-blur-md">
+                    <span className="font-mono text-[11px] font-medium tracking-tight text-ink">
+                      Meng Rithisak
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <LiveDot />
+                      <span className="label">Full Stack Dev</span>
+                    </span>
+                  </div>
                 </div>
 
-                {/* Floating tech chips */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -left-4 sm:-left-8 top-10 flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 border border-cyan-500/30 rounded-full px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-xl shadow-slate-900/10 dark:shadow-black/40 backdrop-blur-sm"
+                {/* Floating framework markers */}
+                <motion.span
+                  animate={reduce ? {} : { y: [0, -8, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -left-3 top-10 flex items-center gap-2 rounded-full border border-line bg-surface/90 px-3 py-1.5 shadow-sm backdrop-blur-md sm:-left-6"
                 >
-                  <i className="fa-brands fa-react text-[#61DAFB] text-base" /> React
-                </motion.div>
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-                  className="absolute -right-2 sm:-right-6 bottom-16 flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 border border-red-500/30 rounded-full px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-xl shadow-slate-900/10 dark:shadow-black/40 backdrop-blur-sm"
+                  <i className="fa-brands fa-react text-[#61DAFB] text-sm" />
+                  <span className="font-mono text-[11px] text-ink">React</span>
+                </motion.span>
+                <motion.span
+                  animate={reduce ? {} : { y: [0, 8, 0] }}
+                  transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+                  className="absolute -right-3 top-1/2 flex items-center gap-2 rounded-full border border-line bg-surface/90 px-3 py-1.5 shadow-sm backdrop-blur-md sm:-right-6"
                 >
-                  <i className="fa-brands fa-laravel text-[#FF2D20] text-base" /> Laravel
-                </motion.div>
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
-                  className="absolute left-2 -bottom-3 flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 border border-emerald-500/30 rounded-full px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-xl shadow-slate-900/10 dark:shadow-black/40 backdrop-blur-sm"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Full Stack Dev
-                </motion.div>
-              </div>
+                  <i className="fa-brands fa-laravel text-[#FF2D20] text-sm" />
+                  <span className="font-mono text-[11px] text-ink">Laravel</span>
+                </motion.span>
+              </motion.div>
             </motion.div>
-          </div>
-
-          {/* Scroll cue */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-20 flex flex-col items-center gap-2 text-slate-400 dark:text-slate-600 animate-bounce"
-          >
-            <span className="text-xs">Scroll down</span>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-            </svg>
           </motion.div>
         </div>
-      </section>
 
-      {/* ── Services ── */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <span className="text-cyan-600 dark:text-cyan-400 text-sm font-semibold uppercase tracking-widest">What I Do</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mt-2">Services I Offer</h2>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: <i className="fa-solid fa-palette text-pink-500 dark:text-pink-400"></i>,
-                title: "UI/UX Design",
-                desc: "Creating beautiful and intuitive user interfaces with modern design principles and pixel-perfect attention to detail.",
-                color: "from-pink-500/10 to-rose-500/5 border-pink-500/20",
-                glow: "group-hover:shadow-pink-500/10",
-              },
-              {
-                icon: <i className="fa-solid fa-laptop-code text-cyan-500 dark:text-cyan-400"></i>,
-                title: "Development",
-                desc: "Building responsive and performant web applications with cutting-edge technologies like React, Laravel, and more.",
-                color: "from-cyan-500/10 to-blue-500/5 border-cyan-500/20",
-                glow: "group-hover:shadow-cyan-500/10",
-              },
-              {
-                icon: <i className="fa-solid fa-rocket text-purple-500 dark:text-purple-400"></i>,
-                title: "Optimization",
-                desc: "Ensuring lightning-fast load times, SEO best practices, and smooth user experiences across all devices.",
-                color: "from-purple-500/10 to-violet-500/5 border-purple-500/20",
-                glow: "group-hover:shadow-purple-500/10",
-              },
-            ].map((s, idx) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.2 }}
-                className={`group relative bg-gradient-to-br ${s.color} border rounded-2xl p-8 hover:shadow-xl ${s.glow} transition-all duration-300 hover:-translate-y-1.5 overflow-hidden`}
-              >
-                {/* Hover accent line */}
-                <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                {/* Corner glow */}
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-slate-900/[0.02] dark:bg-white/[0.03] rounded-full blur-2xl group-hover:bg-slate-900/[0.04] dark:group-hover:bg-white/[0.06] transition-colors duration-300" />
-
-                <div className="w-16 h-16 rounded-2xl bg-white/80 border border-slate-200 dark:bg-slate-950/60 dark:border-slate-700/60 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:border-slate-300 dark:group-hover:border-slate-600 transition-all duration-300">
-                  {s.icon}
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">{s.title}</h3>
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">{s.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Stats ── */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-blue-500/5 to-purple-500/5" />
-        <div className="absolute inset-0 border-y border-slate-200 dark:border-slate-800/60" />
-        <div className="relative max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((s, idx) => (
-              <motion.div
-                key={s.label}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="text-center group"
-              >
-                <div className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 dark:from-cyan-400 to-blue-500 dark:to-blue-400 mb-2 group-hover:scale-110 transition-transform duration-300">
-                  {s.value}
-                </div>
-                <div className="text-slate-600 dark:text-slate-400 text-sm font-medium">{s.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Tech Stack ── */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <span className="text-cyan-600 dark:text-cyan-400 text-sm font-semibold uppercase tracking-widest">My Toolkit</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mt-2">Technologies I Work With</h2>
-            <p className="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">
-              Leveraging modern tools and frameworks to build scalable, maintainable applications
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {techStack.map((tech, idx)=>(
-              <motion.div
-                key={tech.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                className="group bg-white hover:bg-slate-50 border border-slate-200 shadow-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 hover:border-cyan-500/30 dark:hover:border-cyan-500/30 p-5 rounded-xl text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/5 cursor-default"
-              >
-                <div className="text-2xl mb-2">{tech.icon}</div>
-                <div className="text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white text-xs font-semibold transition-colors duration-200">
-                  {tech.name}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA ── */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
+        {/* Scroll cue */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
+          className="shell relative hidden pb-8 lg:block"
         >
-          <div className="relative group">
-            {/* Glow behind card */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/25 via-blue-500/15 to-purple-500/25 rounded-[28px] blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="flex items-center gap-3">
+            <span className="label">Scroll down</span>
+            <motion.span
+              animate={reduce ? {} : { y: [0, 5, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              className="text-muted"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+              </svg>
+            </motion.span>
+          </div>
+        </motion.div>
+      </section>
 
-            <div className="relative bg-gradient-to-br from-white to-slate-100 border border-slate-200 dark:from-slate-900 dark:to-slate-800 dark:border-slate-700/60 rounded-3xl p-10 sm:p-12 text-center overflow-hidden">
-              {/* Decorative glow */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-600/5 rounded-3xl" />
-              <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl" />
-              <div className="absolute -top-16 -right-16 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl" />
+      {/* ═══ Tech marquee — transition band ═══ */}
+      <div className="relative overflow-hidden border-y border-line bg-surface-2/60 py-5">
+        <div className="mask-fade-x flex w-max animate-marquee gap-10 hover:[animation-play-state:paused]">
+          {[...techStack, ...techStack].map((tech, i) => (
+            <span
+              key={`${tech.name}-${i}`}
+              className="flex shrink-0 items-center gap-2.5 text-ink-soft"
+              aria-hidden={i >= techStack.length}
+            >
+              <span className="text-base leading-none">{tech.icon}</span>
+              <span className="font-mono text-xs uppercase tracking-[0.14em]">{tech.name}</span>
+            </span>
+          ))}
+        </div>
+      </div>
 
-              <div className="relative">
-                <span className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/25 rounded-full px-4 py-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-6">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Available for full time work
-                </span>
-                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-4">
-                  Ready to work{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 dark:from-cyan-400 to-blue-500 dark:to-blue-400">together?</span>
-                </h2>
-                <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-lg mx-auto">
-                  Let's collaborate and bring your ideas to life with clean code and beautiful design.
+      {/* ═══ Services ═══ */}
+      <Section>
+        <SectionHead
+          index="01"
+          label="What I Do"
+          title="Services I Offer"
+          aside={`${services.length} services`}
+        />
+
+        <div className="mt-12 border-t border-line">
+          {services.map((s, i) => (
+            <Reveal key={s.title} delay={i * 0.08}>
+              <article className="group relative grid grid-cols-1 items-start gap-4 border-b border-line py-8 transition-colors duration-500 sm:grid-cols-12 sm:gap-8 sm:py-10">
+                {/* Ember sweep on hover */}
+                <span
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-700 ease-out group-hover:scale-x-100"
+                  aria-hidden="true"
+                />
+
+                <div className="flex items-center gap-4 sm:col-span-4 sm:items-baseline">
+                  <span className="label text-accent-ink">{`0${i + 1}`}</span>
+                  <h3 className="font-display text-2xl font-semibold tracking-tight text-ink transition-transform duration-500 ease-out sm:text-[28px] sm:group-hover:translate-x-1">
+                    {s.title}
+                  </h3>
+                </div>
+
+                <p className="text-[15px] leading-relaxed text-ink-soft text-pretty sm:col-span-7">
+                  {s.desc}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-semibold px-10 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5 text-base"
-                  >
+
+                <div className="hidden justify-end sm:col-span-1 sm:flex">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-muted transition-colors duration-500 group-hover:border-accent group-hover:text-accent-ink">
+                    {s.icon}
+                  </span>
+                </div>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
+      {/* ═══ Stats ═══ */}
+      <section className="border-y border-line bg-surface-2/50">
+        <div className="shell">
+          <div className="grid grid-cols-2 divide-x divide-y divide-line border-x border-line sm:divide-y-0 lg:grid-cols-4">
+            {stats.map((s, i) => (
+              <Reveal
+                key={s.label}
+                delay={i * 0.07}
+                className="px-5 py-10 text-center sm:px-6 sm:py-14"
+              >
+                <p className="font-display text-4xl font-semibold tracking-tighter text-ink sm:text-5xl">
+                  {s.value}
+                </p>
+                <p className="label mt-3">{s.label}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ Toolkit ═══ */}
+      <Section>
+        <SectionHead
+          index="02"
+          label="My Toolkit"
+          title="Technologies I Work With"
+          description="Leveraging modern tools and frameworks to build scalable, maintainable applications"
+          aside={`${techStack.length} tools`}
+        />
+
+        <div className="mt-12 grid grid-cols-2 border-l border-t border-line sm:grid-cols-3 lg:grid-cols-4">
+          {techStack.map((tech, i) => (
+            <Reveal
+              key={tech.name}
+              delay={Math.min(i, 8) * 0.04}
+              className="group relative border-b border-r border-line"
+            >
+              <div className="flex items-center gap-3 px-5 py-6 transition-colors duration-500 group-hover:bg-surface">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center text-lg transition-transform duration-500 ease-out group-hover:-translate-y-0.5">
+                  {tech.icon}
+                </span>
+                <span className="text-sm font-medium leading-tight text-ink-soft transition-colors duration-300 group-hover:text-ink">
+                  {tech.name}
+                </span>
+              </div>
+              <span
+                className="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-500 ease-out group-hover:scale-x-100"
+                aria-hidden="true"
+              />
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
+      {/* ═══ CTA — inverted block ═══ */}
+      <section className="pb-24 sm:pb-32">
+        <div className="shell">
+          <Reveal>
+            <div className="bg-noise relative overflow-hidden rounded-2xl bg-ink px-6 py-16 text-paper sm:px-12 sm:py-20 lg:px-16 lg:py-24">
+              <div
+                className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-accent/25 blur-[110px]"
+                aria-hidden="true"
+              />
+              <div className="relative max-w-3xl">
+                <span className="inline-flex items-center gap-2.5 rounded-full border border-paper/20 px-3.5 py-1.5">
+                  <LiveDot />
+                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-paper/70">
+                    Available for full time work
+                  </span>
+                </span>
+
+                <h2 className="mt-8 font-display text-display font-semibold leading-[0.95]">
+                  Ready to work{" "}
+                  <span className="text-accent">together?</span>
+                </h2>
+
+                <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-paper/65 text-pretty sm:text-base">
+                  Let&apos;s collaborate and bring your ideas to life with clean code and beautiful
+                  design.
+                </p>
+
+                <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+                  <Link to="/contact" className="btn-accent">
                     Start a Conversation →
                   </Link>
                   <Link
                     to="/portfolio"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 shadow-sm dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:border-slate-700 dark:text-white hover:border-cyan-500/50 font-semibold px-10 py-4 rounded-xl transition-all duration-300 hover:-translate-y-0.5 text-base"
+                    className="btn-ghost border-paper/25 text-paper hover:border-paper/60 hover:bg-paper/10"
                   >
                     See My Projects
                   </Link>
                 </div>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </Reveal>
+        </div>
       </section>
 
       <ScrollToNext to="/about" label="About Me" />
       <Footer />
-    </div>
+    </main>
   )
 }

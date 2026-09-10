@@ -1,65 +1,246 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
-  font-family: 'Inter', sans-serif;
-  box-sizing: border-box;
+/* ==========================================================================
+   Design tokens — "Technical Editorial"
+   Duotone paper/ink canvas, one ember accent, hairline rules everywhere.
+   ========================================================================== */
+@layer base {
+  :root {
+    /* Surfaces */
+    --paper: 40 20% 97%;        /* page background */
+    --surface: 0 0% 100%;       /* raised card */
+    --surface-2: 40 14% 94%;    /* inset / sunken */
+
+    /* Text */
+    --ink: 30 6% 8%;            /* primary text */
+    --ink-soft: 30 4% 34%;      /* secondary text */
+    --muted: 35 5% 48%;         /* tertiary / metadata */
+
+    /* Lines */
+    --line: 36 12% 87%;
+    --line-strong: 34 10% 78%;
+
+    /* Accent */
+    --accent: 16 90% 52%;
+    --accent-ink: 16 78% 44%;   /* accent tuned for text on light */
+    --live: 158 64% 38%;
+
+    --radius: 14px;
+  }
+
+  html.dark {
+    --paper: 30 6% 5%;
+    --surface: 30 5% 8%;
+    --surface-2: 30 5% 11%;
+
+    --ink: 40 20% 96%;
+    --ink-soft: 36 8% 72%;
+    --muted: 34 6% 55%;
+
+    --line: 30 5% 16%;
+    --line-strong: 30 5% 24%;
+
+    --accent: 18 95% 58%;
+    --accent-ink: 20 95% 63%;
+    --live: 158 60% 48%;
+  }
+
+  * {
+    box-sizing: border-box;
+    border-color: hsl(var(--line));
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: hsl(var(--paper));
+    color: hsl(var(--ink));
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.25);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--surface-2)); }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--line-strong));
+    border-radius: 99px;
+    border: 3px solid hsl(var(--surface-2));
+  }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent)); }
 }
 
-html {
-  scroll-behavior: smooth;
+/* ==========================================================================
+   Components
+   ========================================================================== */
+@layer components {
+  /* Monospace metadata label — used for every eyebrow / index / caption */
+  .label {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: hsl(var(--muted));
+  }
+
+  /* Standard raised panel */
+  .panel {
+    background-color: hsl(var(--surface));
+    border: 1px solid hsl(var(--line));
+    border-radius: var(--radius);
+  }
+
+  /* Page gutter */
+  .shell {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) { .shell { padding-inline: 40px; } }
+
+  /* Ember primary button */
+  .btn-accent {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    background: hsl(var(--accent));
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+    box-shadow: 0 1px 2px hsl(var(--accent) / 0.35), 0 8px 24px -10px hsl(var(--accent) / 0.7);
+  }
+  .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 2px 4px hsl(var(--accent) / 0.4), 0 16px 34px -12px hsl(var(--accent) / 0.85); }
+  .btn-accent:active { transform: translateY(0); }
+
+  /* Outlined secondary button */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--line-strong));
+    background: transparent;
+    color: hsl(var(--ink));
+    font-size: 14px;
+    font-weight: 600;
+    transition: border-color 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease;
+  }
+  .btn-ghost:hover {
+    border-color: hsl(var(--ink) / 0.55);
+    background: hsl(var(--ink) / 0.04);
+    transform: translateY(-2px);
+  }
+
+  /* Small pill used for tech tags */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--line));
+    background: hsl(var(--surface-2));
+    color: hsl(var(--ink-soft));
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  /* Underline-on-hover text link */
+  .link-underline {
+    background-image: linear-gradient(hsl(var(--accent)), hsl(var(--accent)));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease;
+  }
+  .link-underline:hover { background-size: 100% 1px; color: hsl(var(--accent-ink)); }
 }
 
-body {
-  background-color: #f8fafc; /* slate-50 */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-html.dark body {
-  background-color: #020617; /* slate-950 */
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+@layer utilities {
+  /* Blueprint grid overlay */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--line)) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--line)) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  /* Fine paper noise, kept very subtle */
+  .bg-noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  html.dark .bg-noise::after { opacity: 0.05; }
+
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
 }
 
-/* Custom scrollbar — light */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #e2e8f0;
-}
-::-webkit-scrollbar-thumb {
-  background: #94a3b8;
-  border-radius: 99px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #06b6d4;
-}
-
-/* Custom scrollbar — dark */
-html.dark ::-webkit-scrollbar-track {
-  background: #0f172a;
-}
-html.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
-}
-html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #06b6d4;
-}
-
-/* Selection highlight */
-::selection {
-  background: rgba(6, 182, 212, 0.3);
-  color: #0f172a;
-}
-html.dark ::selection {
-  color: #e2e8f0;
-}
-
-/* Remove black shadow from video controls and make them black for white backgrounds */
+/* Video controls stay legible on the light modal shell */
 video::-webkit-media-controls-panel {
   background-image: none !important;
-  background-color: transparent !important;
-  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Respect reduced-motion preferences across the whole site */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

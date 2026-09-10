@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
+import { EASE } from "../lib/motion"
 
 // Extra scroll (px of wheel/touch delta) required at the bottom before navigating
 const THRESHOLD = 450
@@ -73,29 +74,32 @@ export default function ScrollToNext({ to, label }) {
     <AnimatePresence>
       {atBottom && (
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 24 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] pointer-events-none"
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.35, ease: EASE }}
+          className="pointer-events-none fixed bottom-5 left-1/2 z-[90] w-[calc(100%-2.5rem)] max-w-md -translate-x-1/2 sm:w-auto"
         >
-          <div className="relative flex items-center gap-3 bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 rounded-full pl-5 pr-4 py-2.5 shadow-xl shadow-slate-900/10 dark:shadow-black/40 backdrop-blur-md overflow-hidden">
+          <div className="relative flex items-center justify-center gap-3 overflow-hidden rounded-full border border-line bg-paper/90 py-2.5 pl-5 pr-3 shadow-lg shadow-black/5 backdrop-blur-xl">
             {/* Progress fill */}
             <div
-              className="absolute inset-0 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 origin-left transition-transform duration-100"
+              className="absolute inset-y-0 left-0 w-full origin-left bg-accent/12 transition-transform duration-150 ease-out"
               style={{ transform: `scaleX(${progress})` }}
+              aria-hidden="true"
             />
-            <span className="relative text-xs font-semibold text-slate-600 dark:text-slate-300">
+
+            <span className="relative truncate font-mono text-[11px] uppercase tracking-[0.1em] text-ink-soft">
               Keep scrolling — next:{" "}
-              <span className="text-cyan-600 dark:text-cyan-400 font-bold">{label}</span>
+              <span className="font-semibold text-accent-ink">{label}</span>
             </span>
+
             <motion.span
-              animate={{ y: [0, 4, 0] }}
-              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-7 h-7 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white shadow-md shadow-cyan-500/30"
+              animate={{ y: [0, 3, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-white"
             >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M19 9l-7 7-7-7" />
               </svg>
             </motion.span>
           </div>

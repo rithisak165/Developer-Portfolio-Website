@@ -1,0 +1,6 @@
+# Never apply text/CRLF conversion to binary assets
+*.mp4 -text
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.ico -text

@@ -3,110 +3,110 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFacebook, faTelegram } from "@fortawesome/free-brands-svg-icons"
 import { faEnvelope, faArrowUp } from "@fortawesome/free-solid-svg-icons"
 
+const navLinks = [
+  { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
+  { label: "Projects", to: "/portfolio" },
+  { label: "Contact", to: "/contact" },
+]
+
+const socials = [
+  {
+    icon: faFacebook,
+    label: "Facebook",
+    href: "https://www.facebook.com/share/1BY6erLjjv/?mibextid=wwXIfr",
+    external: true,
+  },
+  { icon: faTelegram, label: "Telegram", href: "https://t.me/rithysak_meng", external: true },
+  { icon: faEnvelope, label: "Email", href: "mailto:m.mengrithysak24@cam-ed.com", external: false },
+]
+
 export default function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" })
 
   return (
-    <footer className="relative bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800/60 overflow-hidden">
-      {/* Top gradient hairline */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
-      {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-32 bg-cyan-500/5 blur-3xl rounded-full" />
-      </div>
+    <footer className="bg-noise relative overflow-hidden border-t border-line bg-surface-2/50">
+      <div
+        className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[680px] -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]"
+        aria-hidden="true"
+      />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
-        {/* Top grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      <div className="shell relative pb-10 pt-16 sm:pt-20">
+        <div className="grid grid-cols-1 gap-10 border-b border-line pb-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           {/* Brand */}
-          <div>
-            <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 dark:from-cyan-400 to-blue-500 dark:to-blue-400">
-              RITHISAK
-            </span>
-            <p className="text-slate-600 dark:text-slate-400 mt-3 text-sm leading-relaxed">
-              Full Stack Developer crafting beautiful and scalable digital
-              experiences from Cambodia 🇰🇭
+          <div className="lg:col-span-5">
+            <Link to="/" className="group inline-flex items-center gap-2.5">
+              <span className="h-2 w-2 rounded-full bg-accent" />
+              <span className="font-display text-2xl font-semibold tracking-tight text-ink">
+                RITHISAK
+              </span>
+            </Link>
+            <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-ink-soft text-pretty">
+              Full Stack Developer crafting beautiful and scalable digital experiences from Cambodia 🇰🇭
             </p>
           </div>
 
           {/* Navigation */}
-          <div>
-            <h4 className="text-slate-900 dark:text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-              Navigation
-            </h4>
-            <ul className="space-y-2">
-              {[
-                { label: "Home", to: "/" },
-                { label: "About", to: "/about" },
-                { label: "Projects", to: "/portfolio" },
-                { label: "Contact", to: "/contact" },
-              ].map((link) => (
+          <nav className="lg:col-span-3" aria-label="Footer">
+            <h2 className="label">Navigation</h2>
+            <ul className="mt-5 space-y-3">
+              {navLinks.map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="inline-block text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:translate-x-1 transition-all duration-200 text-sm"
+                    className="link-underline inline-block text-[15px] text-ink-soft hover:text-ink"
                   >
-                    › {link.label}
+                    {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
-          {/* Contact & Social */}
-          <div>
-            <h4 className="text-slate-900 dark:text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-              Connect
-            </h4>
-            <div className="flex gap-3 mb-4">
-              <a
-                href="https://www.facebook.com/share/1BY6erLjjv/?mibextid=wwXIfr"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-transparent hover:bg-cyan-500 dark:hover:bg-cyan-500 text-slate-600 dark:text-slate-300 hover:text-white dark:hover:text-white flex items-center justify-center transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25"
-              >
-                <FontAwesomeIcon icon={faFacebook} />
-              </a>
-              <a
-                href="https://t.me/rithysak_meng"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Telegram"
-                className="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-transparent hover:bg-cyan-500 dark:hover:bg-cyan-500 text-slate-600 dark:text-slate-300 hover:text-white dark:hover:text-white flex items-center justify-center transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25"
-              >
-                <FontAwesomeIcon icon={faTelegram} />
-              </a>
-              <a
-                href="mailto:m.mengrithysak24@cam-ed.com"
-                aria-label="Email"
-                className="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-transparent hover:bg-cyan-500 dark:hover:bg-cyan-500 text-slate-600 dark:text-slate-300 hover:text-white dark:hover:text-white flex items-center justify-center transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25"
-              >
-                <FontAwesomeIcon icon={faEnvelope} />
-              </a>
+          {/* Connect */}
+          <div className="lg:col-span-4">
+            <h2 className="label">Connect</h2>
+            <div className="mt-5 flex gap-2.5">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target={s.external ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink-soft transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-accent hover:text-accent-ink"
+                >
+                  <FontAwesomeIcon icon={s.icon} className="text-sm" />
+                </a>
+              ))}
             </div>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">m.mengrithysak24@cam-ed.com</p>
+            <a
+              href="mailto:m.mengrithysak24@cam-ed.com"
+              className="link-underline mt-5 inline-block font-mono text-[13px] text-ink-soft hover:text-ink"
+            >
+              m.mengrithysak24@cam-ed.com
+            </a>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm">
+        {/* Bottom bar */}
+        <div className="flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
+          <p className="label normal-case tracking-normal">
             © {new Date().getFullYear()} Rithisak. All rights reserved.
           </p>
-          <p className="text-slate-500 dark:text-slate-600 text-xs flex items-center gap-1.5">
+
+          <p className="label flex items-center gap-1.5 normal-case tracking-normal">
             Built with
-            <i className="fa-brands fa-react text-cyan-500 dark:text-cyan-400" /> React &amp;
-            <i className="fa-solid fa-wind text-cyan-500 dark:text-cyan-400" /> Tailwind CSS
+            <i className="fa-brands fa-react text-accent-ink" /> React &amp;
+            <i className="fa-solid fa-wind text-accent-ink" /> Tailwind CSS
           </p>
+
           <button
             onClick={scrollToTop}
             aria-label="Scroll to top"
-            className="w-9 h-9 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-transparent hover:bg-cyan-500 dark:hover:bg-cyan-500 text-slate-600 dark:text-slate-300 hover:text-white dark:hover:text-white flex items-center justify-center transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink-soft transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-accent hover:text-accent-ink"
           >
-            <FontAwesomeIcon icon={faArrowUp} className="text-sm" />
+            <FontAwesomeIcon icon={faArrowUp} className="text-xs" />
           </button>
         </div>
       </div>

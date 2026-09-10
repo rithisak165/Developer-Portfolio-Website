@@ -15,11 +15,11 @@ import { Section, SectionHead, LiveDot } from "../ui/Section"
 const featured = {
   title: "AFM — Financial Modelling Platform",
   company: "Inklusivity Technology",
-  role: "Software Developer Internship · 6 Months · Completed",
+  role: "Software Developer Internship · 3 Months · Completed",
   link: "https://fmodelling.e-workplace.net/",
   image: FModelling,
   description:
-    "A full financial modelling & projection platform that I designed, built and shipped 100% alone — from an empty repository to a live production system — during my 6-month internship. It generates real-time 7-year financial projections with live dashboards, charts and Excel export.",
+    "A full financial modelling & projection platform that I designed, built and shipped 100% alone — from an empty repository to a live production system — during my 3-month internship. It generates real-time 7-year financial projections with live dashboards, charts and Excel export.",
   highlights: [
     "7-Year P&L, Balance Sheet & Cash Flow projections",
     "Scenario analysis — Business As Usual vs Project",
@@ -78,7 +78,7 @@ const projects = [
 
 const stats = [
   { value: "5+", label: "Projects Built" },
-  { value: "6", label: "Months Internship" },
+  { value: "3", label: "Months Internship" },
   { value: "1", label: "Live Production App" },
   { value: "100%", label: "Self-Built From 0" },
 ]

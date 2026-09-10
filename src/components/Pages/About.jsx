@@ -81,7 +81,7 @@ const internshipCertificate = {
 const experiences = [
   {
     role: "Full-stack Developer Intern — Inklusivity Technology",
-    period: "2026 · 6 Months (Completed)",
+    period: "2026 · 3 Months (Completed)",
     type: "Internship",
     desc: "Designed and built AFM, a full financial modelling platform (7-year P&L, balance sheet, cash flow, valuation & scenario projections), 100% solo from an empty repo to production — now live at fmodelling.e-workplace.net.",
   },
@@ -101,7 +101,7 @@ const experiences = [
 
 const stats = [
   { value: `${certificates.length + 1}`, label: "Certificates" },
-  { value: "6", label: "Months Interning" },
+  { value: "3", label: "Months Interning" },
   { value: `${skills.length}`, label: "Technologies" },
   { value: "5+", label: "Projects Shipped" },
 ]

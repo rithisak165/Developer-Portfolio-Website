@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local environment (contains your Web3Forms access key)
+.env
+.env.local
+.env.*.local

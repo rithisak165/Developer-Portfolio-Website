@@ -63,3 +63,30 @@ Open to Junior Developer opportunities.
 
 MENG RITHISAK  
 Fullstack Developer
+
+---
+
+## ⚙️ Contact Form Setup (Web3Forms)
+
+The contact form delivers real messages to your inbox. It needs one free access key.
+
+1. Go to **https://web3forms.com** and enter the Gmail address that should receive messages.
+2. Web3Forms emails you an **Access Key**.
+3. In the project root, copy `.env.example` to `.env` and paste the key:
+
+   ```
+   VITE_WEB3FORMS_KEY=paste-your-key-here
+   ```
+
+4. Restart the dev server (`npm run dev`) — Vite only reads `.env` at startup.
+5. For the live site on Vercel: **Settings → Environment Variables → Add**
+   `VITE_WEB3FORMS_KEY`, then redeploy.
+
+**What arrives in your inbox:** the sender's name, email and message, with the
+subject line `Portfolio — <their subject>`. Pressing **Reply** in Gmail replies
+straight to the visitor, because the form sets their address as `Reply-To`.
+
+`.env` is git-ignored, so the key is never committed.
+
+> If no key is configured, the form falls back to opening the visitor's own mail
+> app with the message pre-filled, so it still works instead of silently failing.

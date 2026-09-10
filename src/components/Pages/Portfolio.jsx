@@ -27,7 +27,7 @@ const featured = {
     "Interactive dashboards, Excel export & EN/KH languages",
   ],
   tags: ["React", "Tailwind CSS", "Laravel API", "PostgreSQL", "Chart.js", "i18n EN/KH"],
-  credentials: [{ role: "User", email: "rithisak@gmail.com", password: "12345678" }],
+  credentials: [{ role: "User", email: "bitthork165@gmail.com", password: "Msksak1651" }],
 }
 
 /* ── Other projects ── */

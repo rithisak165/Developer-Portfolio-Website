@@ -44,23 +44,78 @@ const socials = [
 ]
 
 const field =
-  "w-full rounded-lg border border-line bg-surface-2 px-4 py-3 text-[15px] text-ink placeholder:text-muted/70 outline-none transition-colors duration-300 hover:border-line-strong focus:border-accent focus:bg-surface"
+  "w-full rounded-lg border border-line bg-surface-2 px-4 py-3 text-[15px] text-ink placeholder:text-muted/70 outline-none transition-colors duration-300 hover:border-line-strong focus:border-accent focus:bg-surface disabled:opacity-60"
+
+/* Delivery inbox — messages arrive here and Reply goes straight back to the sender. */
+const INBOX = "m.mengrithysak24@cam-ed.com"
+
+/* Web3Forms access key, injected at build time from .env — see README. */
+const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY
+
+/** Fallback for when no key is configured: open the visitor's own mail app. */
+function mailtoLink({ name, email, subject, message }) {
+  const body = `${message}\n\n—\nFrom: ${name}\nEmail: ${email}`
+  return `mailto:${INBOX}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" })
-  const [submitted, setSubmitted] = useState(false)
+  /* idle → sending → success | error */
+  const [status, setStatus] = useState("idle")
+  const [errorMessage, setErrorMessage] = useState("")
+  const submitted = status === "success"
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => {
-      setSubmitted(false)
-      setFormData({ name: "", email: "", subject: "", message: "" })
-    }, 3000)
+
+    // Honeypot: bots fill hidden fields, humans never see them.
+    if (e.target.botcheck?.checked) return
+
+    // Without a key there is nothing to POST to — hand off to the mail client.
+    if (!ACCESS_KEY) {
+      window.location.href = mailtoLink(formData)
+      return
+    }
+
+    setStatus("sending")
+    setErrorMessage("")
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          // What lands in the inbox
+          subject: `Portfolio — ${formData.subject}`,
+          from_name: "Portfolio Contact Form",
+          // Hitting Reply in Gmail replies to the visitor, not to Web3Forms
+          replyto: formData.email,
+          // The visitor's details, shown as rows in the email
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      })
+
+      const data = await res.json().catch(() => ({}))
+
+      if (res.ok && data.success) {
+        setStatus("success")
+        setFormData({ name: "", email: "", subject: "", message: "" })
+        setTimeout(() => setStatus("idle"), 6000)
+      } else {
+        setStatus("error")
+        setErrorMessage(data.message || "The message could not be sent. Please try again.")
+      }
+    } catch {
+      setStatus("error")
+      setErrorMessage("Network error — please check your connection and try again.")
+    }
   }
 
   return (
@@ -240,6 +295,7 @@ export default function Contact() {
                             value={formData.name}
                             onChange={handleChange}
                             required
+                            disabled={status === "sending"}
                             placeholder="Your name"
                             className={field}
                           />
@@ -255,6 +311,7 @@ export default function Contact() {
                             value={formData.email}
                             onChange={handleChange}
                             required
+                            disabled={status === "sending"}
                             placeholder="your@email.com"
                             className={field}
                           />
@@ -272,6 +329,7 @@ export default function Contact() {
                           value={formData.subject}
                           onChange={handleChange}
                           required
+                          disabled={status === "sending"}
                           placeholder="Project inquiry, collaboration..."
                           className={field}
                         />
@@ -287,17 +345,59 @@ export default function Contact() {
                           value={formData.message}
                           onChange={handleChange}
                           required
+                          disabled={status === "sending"}
                           rows={6}
                           placeholder="Tell me about your project..."
                           className={`${field} resize-none`}
                         />
                       </div>
 
-                      <button type="submit" className="btn-accent group w-full">
-                        Send Message
-                        <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">
-                          →
-                        </span>
+                      {/* Honeypot — hidden from people, catches bots */}
+                      <input
+                        type="checkbox"
+                        name="botcheck"
+                        className="hidden"
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
+
+                      {status === "error" && (
+                        <div
+                          role="alert"
+                          className="rounded-lg border border-accent/30 bg-accent/5 px-4 py-3.5 text-[13px] text-ink-soft"
+                        >
+                          <p className="font-medium text-ink">{errorMessage}</p>
+                          <p className="mt-1.5">
+                            You can also email me directly at{" "}
+                            <a href={`mailto:${INBOX}`} className="link-underline font-medium text-ink">
+                              {INBOX}
+                            </a>
+                            .
+                          </p>
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={status === "sending"}
+                        className="btn-accent group w-full disabled:cursor-not-allowed disabled:opacity-70"
+                      >
+                        {status === "sending" ? (
+                          <>
+                            <span
+                              className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
+                              aria-hidden="true"
+                            />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Send Message
+                            <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">
+                              →
+                            </span>
+                          </>
+                        )}
                       </button>
                     </motion.form>
                   )}

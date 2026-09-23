@@ -226,6 +226,25 @@
     mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
   }
 
+  /* Cursor-following glow — pair with trackSpotlight() from lib/spotlight */
+  .spotlight { position: relative; isolation: isolate; }
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    background: radial-gradient(
+      380px circle at var(--mx, 50%) var(--my, 50%),
+      var(--spot, hsl(var(--accent) / 0.1)),
+      transparent 65%
+    );
+  }
+  .spotlight:hover::before { opacity: 1; }
+
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
 }

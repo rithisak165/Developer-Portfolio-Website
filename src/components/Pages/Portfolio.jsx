@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import Img1 from "../../assets/img1.jpg"
 import Img2 from "../../assets/img2.jpg"
 import Img4 from "../../assets/img4.jpg"
 import Img5 from "../../assets/image5.png"
@@ -10,6 +9,8 @@ import ScrollToNext from "../ScrollToNext"
 import Reveal from "../ui/Reveal"
 import { EASE } from "../../lib/motion"
 import { Section, SectionHead, LiveDot } from "../ui/Section"
+import RentFlowCaseStudy from "../RentFlowCaseStudy"
+import { trackSpotlight } from "../../lib/spotlight"
 
 /* ── Featured internship project ── */
 const featured = {
@@ -62,16 +63,6 @@ const projects = [
     tags: ["React", "Tailwind"],
     image: Img2,
     link: "#",
-    status: "live",
-  },
-  {
-    id: 4,
-    title: "License Key Website",
-    description:
-      "A game hacking & selling platform with cart, checkout, payment integration, and automatic key generation.",
-    tags: ["React", "Laravel", "PostgreSQL", "Tailwind"],
-    image: Img1,
-    link: "https://laravel-project-hosting.onrender.com/",
     status: "live",
   },
 ]
@@ -349,14 +340,24 @@ export default function Portfolio() {
         </Reveal>
       </Section>
 
-      {/* ═══ More projects ═══ */}
-      <Section className="border-t border-line bg-surface-2/40">
-        <SectionHead index="02" label="Selected Work" title="More Projects" aside={`${projects.length} projects`} />
+      {/* ═══ Case study: RentFlow ═══ */}
+      <RentFlowCaseStudy index="02" onPlay={setSelectedVideo} />
 
-        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+      {/* ═══ More projects ═══ */}
+      <Section className="bg-surface-2/40">
+        <SectionHead index="03" label="Selected Work" title="More Projects" aside={`${projects.length} projects`} />
+
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, i) => (
-            <Reveal key={project.id} delay={(i % 2) * 0.08}>
-              <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition-all duration-500 ease-out hover:-translate-y-1 hover:border-line-strong hover:shadow-xl hover:shadow-black/5">
+            <Reveal
+              key={project.id}
+              delay={(i % 3) * 0.08}
+              className={i === projects.length - 1 && projects.length % 2 === 1 ? "md:col-span-2 lg:col-span-1" : ""}
+            >
+              <article
+                onMouseMove={trackSpotlight}
+                className="spotlight group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition-all duration-500 ease-out hover:-translate-y-1 hover:border-line-strong hover:shadow-xl hover:shadow-black/5"
+              >
                 {/* Preview */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
                   <img

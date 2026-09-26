@@ -20,7 +20,7 @@ const rentflow = {
   roles: ["Landlords", "Managers", "Tenants"],
   release: "September 2026 release",
   video: "/rentflow_demo.mp4",
-  handbook: "https://claude.ai/artifact/2RTJZvsLYpNVXtoshN7Q6j",
+  handbook: "https://claude.ai/artifact/WLvaAYMTxCBGZmXdHmxR9F",
   image: RentFlowShot,
   tags: ["Laravel", "Telegram Bot API", "KHQR / ABA", "Task Scheduler", "Khmer / English"],
 }
